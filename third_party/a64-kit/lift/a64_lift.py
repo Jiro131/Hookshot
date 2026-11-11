@@ -707,7 +707,10 @@ FF_BAD = ("c->fpcr", "c->fpsr", "c->excl", "c->pc", "c->halted", "c->poll", "c->
 # FPSR's cumulative bits or-ed in (put back with the registers when the region runs again exactly). An MSR, or an MRS of
 # FPSR, which would see a value the fast copy has not finished, still ends the run.)
 FF_FP_OK = re.compile(r"c->fpcr\s*&|c->fpsr\s*\|=")
-FF_CONV = re.compile(r"\ba64_vfpx_(add32|sub32|mul32)\(|\ba64_fpx_(add32_add32|sub32_sub32|mul32_fma32|div32_div32|sqrt32_sqrt32)\(")
+# ((hookshot) fma32_fma32: FMADD/FMSUB/FNMADD/FNMSUB and FMLA/FMLS S lanes, an FMA3 op where the build has one; see
+# a64_ff_fma32_fma32 in FASTFP_HEADER)
+FF_CONV = re.compile(r"\ba64_vfpx_(add32|sub32|mul32)\(|"
+                     r"\ba64_fpx_(add32_add32|sub32_sub32|mul32_fma32|fma32_fma32|div32_div32|sqrt32_sqrt32)\(")
 VREG_REF = re.compile(r"c->vreg\[(\d+)\]")
 
 
@@ -816,6 +819,30 @@ A64_FF_S(div32_div32, "divss")
 A64_FF_S(mul32_, "mulss")
 static inline __attribute__((always_inline)) uint64_t a64_ff_mul32_fma32(Ctx *c, uint64_t a, uint64_t b, uint64_t z) { (void)z; return a64_ff_mul32_(c, a, b); }
 static inline __attribute__((always_inline)) uint64_t a64_ff_sqrt32_sqrt32(Ctx *c, uint64_t a) { __m128 r; (void)c; A64_FF_SQRT(r, a64_ff_ss(a)); return a64_ff_bits(r); }
+/* (hookshot) FMADD/FMSUB/FNMADD/FNMSUB and FMLA/FMLS S lanes: a64_fpx_fma32_fma32(c, a, b, z) is a*b + z, the lifted
+   code having already flipped the signs the op negates. FMA3's vfmadd231ss rounds once, as Arm does, and takes its
+   NaN in Arm's order (the addend, then a, then b). Two cases differ, and both raise the invalid flag here (a64_ff_spoil_),
+   which sends the run to its exact copy:
+   - 0 * inf + a quiet NaN: x86 returns that NaN with no flag, Arm the default NaN with IOC (so: any NaN result);
+   - a result rounded up to the smallest normal, 2^-126: x86 detects tininess after rounding and raises no underflow,
+     Arm detects it before, sets UFC, and under FZ returns a zero.
+   Without FMA3 (x86-64-v2), the exact helper. */
+#ifdef __FMA__
+static inline __attribute__((always_inline)) void a64_ff_spoil_(void) {
+    __asm__ volatile("vcomiss %0, %0" : : "x"(_mm_castsi128_ps(_mm_cvtsi32_si128(0x7fc00000))) : "cc");
+}
+static inline __attribute__((always_inline)) uint64_t a64_ff_fma32_fma32(Ctx *c, uint64_t a, uint64_t b, uint64_t z) {
+    __m128 r = a64_ff_ss(z);
+    uint32_t m;
+    (void)c;
+    __asm__ volatile("vfmadd231ss %2, %1, %0" : "+x"(r) : "x"(a64_ff_ss(a)), "x"(a64_ff_ss(b)));
+    m = (uint32_t)a64_ff_bits(r) & 0x7fffffffu;
+    if (__builtin_expect(m > 0x7f800000u || m == 0x00800000u, 0)) a64_ff_spoil_();
+    return a64_ff_bits(r);
+}
+#else
+#define a64_ff_fma32_fma32 a64_fpx_fma32_fma32
+#endif
 /* (A64_FASTFP=check) a run's result: counts per file, and the first mismatches of a clean fast run (which must not
    happen) with the run's guest address, on stderr (the game's log) */
 static volatile long long a64_ff_n_[3];   /* runs, clean, mismatched when clean */
@@ -840,6 +867,7 @@ static inline void a64_ff_check(unsigned pc, int clean, int same) {
 #define a64_ff_add32_add32 a64_fpx_add32_add32
 #define a64_ff_sub32_sub32 a64_fpx_sub32_sub32
 #define a64_ff_mul32_fma32 a64_fpx_mul32_fma32
+#define a64_ff_fma32_fma32 a64_fpx_fma32_fma32
 #define a64_ff_div32_div32 a64_fpx_div32_div32
 #define a64_ff_sqrt32_sqrt32 a64_fpx_sqrt32_sqrt32
 #define a64_ff_check(pc, clean, same) ((void)0)

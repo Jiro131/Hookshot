@@ -18,7 +18,11 @@ FASTFP_HEADER and stand-in exact helpers that count their calls and note the reg
     the region's input registers as they were (the fast copy wrote over them);
   - a tiny exact product without FZ, read again by the next op: the exact copy (a denormal operand flags it);
   - overflow and divide-by-zero: fast, the infinities, FPSR.OFC / FPSR.DZC set;
-  - the gate closed (FPSR.IXC clear, or HOS_NO_FASTFP set): the exact copy.
+  - the gate closed (FPSR.IXC clear, or HOS_NO_FASTFP set): the exact copy;
+  - (hookshot) a scalar FMSUB in the region (FMA3 at x86-64-v3, the exact helper at v2), and at v3 the cases where x86's
+    FMA is not Arm's: 0 * inf + a quiet NaN, a product rounded up to 2^-126 (FZ off and on), a subnormal addend under
+    FZ: the exact copy. (Dropping fma32_fma32 from FF_CONV fails the 2^-126 cases.) The op alone against the exact body:
+    tests/test_fastfp_fma.py.
 
 It has teeth (each by hand, then restored, 2026-11-11):
   - the AVX ops' operands swapped (A64_FF_OP's "%2, %1, %0" made "%1, %2, %0"): the random runs differ at v3;
@@ -94,6 +98,9 @@ OPS = ["a64_vfpx_mul32(c,c->vreg[0],c->vreg[0],c->vreg[1],4);",                 
        "memcpy(c->vreg[6],_r,16);}",                                                    # v6 = scalar lanes
        "{ uint32_t _n[4],_r[4]={0};memcpy(_n,c->vreg[3],16);"
        "{uint64_t _a=_n[0],_v=0;_v=a64_fpx_sqrt32_sqrt32(c,_a);_r[0]=(uint32_t)_v;} memcpy(c->vreg[7],_r,16);}",
+       # (hookshot) FMSUB s8, s9, s10, s11 as the lifter emits it: v8 = v11 - v9 * v10 (a64_ff_fma32_fma32)
+       "{ uint64_t _a=0,_b=0,_z=0,_v; memcpy(&_a,c->vreg[9],4);memcpy(&_b,c->vreg[10],4);memcpy(&_z,c->vreg[11],4);"
+       "_a^=0x80000000ULL;_v=a64_fpx_fma32_fma32(c,_a,_b,_z);c->vreg[8][0]=_v;c->vreg[8][1]=0;}",
        "c->x[5] = c->x[5] + 1;"]
 
 DRIVER = r"""
@@ -123,6 +130,9 @@ static uint64_t a64_fpx_sub32_sub32(Ctx *c, uint64_t a, uint64_t b) { (void)c; n
 static uint64_t a64_fpx_mul32_fma32(Ctx *c, uint64_t a, uint64_t b, uint64_t z) { (void)c; (void)z; note(); return B(F(a) * F(b)); }
 static uint64_t a64_fpx_div32_div32(Ctx *c, uint64_t a, uint64_t b) { (void)c; note(); return B(F(a) / F(b)); }
 static uint64_t a64_fpx_sqrt32_sqrt32(Ctx *c, uint64_t a) { (void)c; note(); return B(sqrtf(F(a))); }
+/* (not counted: at x86-64-v2 the fast copy calls it too, as a64_ff_fma32_fma32; the region's other ops count the
+   exact copy) */
+static uint64_t a64_fpx_fma32_fma32(Ctx *c, uint64_t a, uint64_t b, uint64_t z) { (void)c; return B(fmaf(F(a), F(b), F(z))); }
 %(header)s
 static void region(Ctx *__restrict c) {
 %(region)s
@@ -139,6 +149,8 @@ static void reference(Ctx *c) {
     memset(r, 0, 16); for (int j = 0; j < 2; j++) r[j] = v1[j] + v3[j]; memcpy(c->vreg[5], r, 16);
     r[0] = v1[0] + v3[0]; r[1] = v1[1] - v3[1]; r[2] = v1[2] * v3[2]; r[3] = v1[3] / v3[3]; memcpy(c->vreg[6], r, 16);
     memset(r, 0, 16); r[0] = sqrtf(v3[0]); memcpy(c->vreg[7], r, 16);
+    { float a, b, z; memcpy(&a, c->vreg[9], 4); memcpy(&b, c->vreg[10], 4); memcpy(&z, c->vreg[11], 4);
+      c->vreg[8][0] = B(fmaf(-a, b, z)); c->vreg[8][1] = 0; }
     c->x[5] += 1;
 }
 static uint64_t rng = 20261111;
@@ -149,7 +161,7 @@ static void set(Ctx *c, int v, uint32_t a, uint32_t b, uint32_t d, uint32_t e) {
     uint32_t l[4] = {a, b, d, e}; memcpy(c->vreg[v], l, 16); }
 static void fresh(Ctx *c, uint64_t fpcr) {
     memset(c, 0, sizeof *c); c->fpcr = fpcr; c->fpsr = 0x10; c->x[5] = 41;
-    for (int v = 0; v < 8; v++) set(c, v, normal(), normal(), normal(), 0x3f800000u + (rnd() & 0xfffu));
+    for (int v = 0; v < 12; v++) set(c, v, normal(), normal(), normal(), 0x3f800000u + (rnd() & 0xfffu));
     c->vreg[3][0] &= ~0x80000000ULL; }   /* (v3's lane 0 is square-rooted: not negative) */
 static int run(Ctx *c) { exact_calls = 0; cur = c; region(c); return exact_calls; }
 static int bad;
@@ -179,6 +191,17 @@ int main(void) {
     must_fall_back("a tiny product under FZ", &c);   /* (2^-70 * 2^-70) */
     fresh(&c, 0); set(&c, 0, 0x1c800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u); set(&c, 1, 0x1c800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u);
     must_fall_back("a tiny exact product read again (a denormal operand)", &c);   /* (2^-140, then v0 + v3) */
+#ifdef __FMA__
+    /* (hookshot) FMSUB v8 = v11 - v9 * v10: the cases where x86's FMA is not Arm's */
+    fresh(&c, 0); set(&c, 9, 0, 0, 0, 0); set(&c, 10, 0x7f800000u, 0, 0, 0); set(&c, 11, 0x7fc00001u, 0, 0, 0);
+    must_fall_back("0 * inf + a quiet NaN (x86: the NaN, no flag; Arm: the default NaN, IOC)", &c);
+    for (int fz = 0; fz < 2; fz++) {
+        fresh(&c, fz ? 0x01000000u : 0); set(&c, 9, 0xbf000001u, 0, 0, 0); set(&c, 10, 0x00fffffeu, 0, 0, 0); set(&c, 11, 0, 0, 0, 0);
+        must_fall_back(fz ? "a product rounded up to 2^-126, FZ" : "a product rounded up to 2^-126", &c);
+    }
+    fresh(&c, 0x01000000u); set(&c, 9, 0xbf800000u, 0, 0, 0); set(&c, 10, 0x3f800000u, 0, 0, 0); set(&c, 11, 0x00000123u, 0, 0, 0);
+    must_fall_back("a subnormal addend under FZ", &c);
+#endif
     fresh(&c, 0); set(&c, 0, 0x71800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u); set(&c, 1, 0x71800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u);
     EXPECT(run(&c) == 0, "overflow: the exact copy ran");
     { uint32_t l[4]; memcpy(l, c.vreg[0], 16); EXPECT(l[0] == 0x7f800000u && (c.fpsr & 4), "overflow: %%08x, FPSR %%llx", l[0], (unsigned long long)c.fpsr); }
