@@ -1,5 +1,173 @@
 # Changelog
 
+## [2.2.0-rc.1](https://github.com/NotRexed/Hookshot/compare/v2.1.0...v2.2.0-rc.1) (2026-11-11)
+
+
+### Features
+
+* an Upscaler choice Off: no upscaling at all, the game's own network left out too ([#2097](https://github.com/NotRexed/Hookshot/issues/2097)) ([215ab3d](https://github.com/NotRexed/Hookshot/commit/215ab3dd6536cb21fc67c2e89c31c10a18df555c))
+* **builder:** the damaged game files a build replaced are listed in the game folder ([#2237](https://github.com/NotRexed/Hookshot/issues/2237)) ([#2254](https://github.com/NotRexed/Hookshot/issues/2254)) ([6b2bcba](https://github.com/NotRexed/Hookshot/commit/6b2bcba341fce14ce4873333d4d859f28c29caf9))
+* **control:** drive a running game over a local socket, with a CLI ([#926](https://github.com/NotRexed/Hookshot/issues/926)) ([32693f0](https://github.com/NotRexed/Hookshot/commit/32693f021c4a4bf52f07a88e570c9da79bb31bfb))
+* **dlss:** DLSS Frame Generation through NGX, evenly paced at 3x and up ([#2118](https://github.com/NotRexed/Hookshot/issues/2118)) ([c51df0b](https://github.com/NotRexed/Hookshot/commit/c51df0b9739e29c408e6b8a3624f537914c0dcca))
+* **fsr4:** FSR 4 for the game's native HDR, given linear light ([#2342](https://github.com/NotRexed/Hookshot/issues/2342)) ([a0dfd28](https://github.com/NotRexed/Hookshot/commit/a0dfd28b8c72466e783315a20ad7fb05de71140c))
+* **host:** a widescreen picture up to 5120x2160's pixels, native for 21:9 at the 4K output ([#2120](https://github.com/NotRexed/Hookshot/issues/2120)) ([d379d88](https://github.com/NotRexed/Hookshot/commit/d379d88906d9deba4fb593b02b87eb9b96c99311))
+* **input:** Camera speed row for the right stick and the camera keys ([#1945](https://github.com/NotRexed/Hookshot/issues/1945)) ([c689be3](https://github.com/NotRexed/Hookshot/commit/c689be3bacc1caf26b16d9e6875325c955422758))
+* make_game.py --fetch-fsr-runtime fetches AMD's FSR 4 runtime ([#1866](https://github.com/NotRexed/Hookshot/issues/1866)) ([d7dd931](https://github.com/NotRexed/Hookshot/commit/d7dd931d2762217ef67b4ba4b0aa10043a82056d))
+* **Menu:** a row that turns the preset to Custom keeps the preset's memory budgets ([#1358](https://github.com/NotRexed/Hookshot/issues/1358)) ([26b2f74](https://github.com/NotRexed/Hookshot/commit/26b2f7445d2351fc054d9fe7621d7e8790875865))
+* **menu:** a V-Sync row (Auto, On, Off) ([#2041](https://github.com/NotRexed/Hookshot/issues/2041)) ([b0361d2](https://github.com/NotRexed/Hookshot/commit/b0361d2407ad8de9f1637933fe9e1405d82dbbc8))
+* **menu:** a VRAM budget row of its own (builds on [#1358](https://github.com/NotRexed/Hookshot/issues/1358)) ([#1859](https://github.com/NotRexed/Hookshot/issues/1859)) ([bb1ffa2](https://github.com/NotRexed/Hookshot/commit/bb1ffa2fb77233140477ca9c22beef5793cdc191))
+* **menu:** add compact TV-style tuning bar for live setting tweaks ([#2378](https://github.com/NotRexed/Hookshot/issues/2378)) ([6c8c1bf](https://github.com/NotRexed/Hookshot/commit/6c8c1bfb08f34a7f9742b768001480d9710664d2))
+* **menu:** an Uncapped choice for the Game frame rate cap ([#2122](https://github.com/NotRexed/Hookshot/issues/2122)) ([364d199](https://github.com/NotRexed/Hookshot/commit/364d19942eb4d620566aa73f3f13fe5c41f7fad1))
+* **menu:** FPS counter levels: frame time, a graph and where the time goes ([#2181](https://github.com/NotRexed/Hookshot/issues/2181)) ([ebbba2e](https://github.com/NotRexed/Hookshot/commit/ebbba2ea868458cde654a008e481f474841f0dff))
+* **prompts:** a new face or new controls show while the game runs, no restart ([#2366](https://github.com/NotRexed/Hookshot/issues/2366)) ([786b5b0](https://github.com/NotRexed/Hookshot/commit/786b5b03543352e25a08f37624e654d3fde86cda))
+* **update:** an update track (Release, Release candidate, Nightly) in the builders and the game ([#2061](https://github.com/NotRexed/Hookshot/issues/2061)) ([6cecdd1](https://github.com/NotRexed/Hookshot/commit/6cecdd18b5301984feb99535cac323f8d1e90b6a))
+* **video:** support 48:9 triple-monitor picture geometry ([#2052](https://github.com/NotRexed/Hookshot/issues/2052)) ([b46b60f](https://github.com/NotRexed/Hookshot/commit/b46b60f036ea739ca8edbde851b0f295a5ac7977))
+* **vk:** reactive mask for DLSS and FSR 3.1 from the scene's transpa… ([#1653](https://github.com/NotRexed/Hookshot/issues/1653)) ([5cbfead](https://github.com/NotRexed/Hookshot/commit/5cbfead0450a4d997135b83e6591775f0f2a32b9))
+* **vk:** say why each texture is evicted, and which GPU-drawn ones go with no copy of their texels ([#1879](https://github.com/NotRexed/Hookshot/issues/1879)) ([d8f4a17](https://github.com/NotRexed/Hookshot/commit/d8f4a173dafb3dc20553145e37d6dbf46dccc91b))
+
+
+### Bug Fixes
+
+* **audio:** the output comes back after its device goes away, and follows Windows' default ([#2190](https://github.com/NotRexed/Hookshot/issues/2190)) ([4a0bf35](https://github.com/NotRexed/Hookshot/commit/4a0bf35f79ad67a352b6790e94043f927f6a0718))
+* **build:** an RX_MARCH choice is not reported as a CPU without AVX2 ([#2223](https://github.com/NotRexed/Hookshot/issues/2223)) ([497060f](https://github.com/NotRexed/Hookshot/commit/497060f928416bcefa2b395f35199b296b58fba7))
+* **builder:** --work set to the checkout's own work folder no longer stops with SameFileError ([#2285](https://github.com/NotRexed/Hookshot/issues/2285)) ([d6dc45b](https://github.com/NotRexed/Hookshot/commit/d6dc45bfd54ea8a6c05f7dd62d9b0545c6812a4f))
+* **builder:** a .nup name outside Windows' code page no longer stops the build ([#2246](https://github.com/NotRexed/Hookshot/issues/2246)) ([#2253](https://github.com/NotRexed/Hookshot/issues/2253)) ([f94a5fe](https://github.com/NotRexed/Hookshot/commit/f94a5fe612b57db96c9dfcf1a648c7cdf16c4b84))
+* **builder:** a drive that cannot read its files is said as that, with its repair ([#2063](https://github.com/NotRexed/Hookshot/issues/2063)) ([#2072](https://github.com/NotRexed/Hookshot/issues/2072)) ([5c59382](https://github.com/NotRexed/Hookshot/commit/5c59382e5d290487394cd6c7c7e480c009b2b104))
+* **builder:** a package with a Python of its own runs no other ([#2045](https://github.com/NotRexed/Hookshot/issues/2045)) ([#2088](https://github.com/NotRexed/Hookshot/issues/2088)) ([d1d3888](https://github.com/NotRexed/Hookshot/commit/d1d3888c2444ca13e96001ec14388715831b24c1))
+* **builder:** an update ends a leftover windowless game process, and names a running one ([#2155](https://github.com/NotRexed/Hookshot/issues/2155)) ([ddafc1f](https://github.com/NotRexed/Hookshot/commit/ddafc1f9df3c34e6971d29b12ab6de5d55696685))
+* **builder:** Linux Play leaves the game its hookshot_log.txt again ([#2279](https://github.com/NotRexed/Hookshot/issues/2279)) ([1e02fdb](https://github.com/NotRexed/Hookshot/commit/1e02fdbe39ca1c4c1fd7f93aa6e18e39ad4265ee))
+* **builder:** retain bounded Linux Play startup diagnostics ([#2024](https://github.com/NotRexed/Hookshot/issues/2024)) ([44e56b0](https://github.com/NotRexed/Hookshot/commit/44e56b0c2b7d2bf235f25455666841595ef2fc85))
+* **builder:** stop when damaged resources have no replacement ([#2096](https://github.com/NotRexed/Hookshot/issues/2096)) ([855a560](https://github.com/NotRexed/Hookshot/commit/855a560d0b5ee550b5f3f49dcda379555217abcd))
+* **builder:** the first page offers the update again after one that stopped ([#2129](https://github.com/NotRexed/Hookshot/issues/2129)) ([#2141](https://github.com/NotRexed/Hookshot/issues/2141)) ([0c0e3cf](https://github.com/NotRexed/Hookshot/commit/0c0e3cf040ca2960cadb9ab1fdf2c12eab899369))
+* **builder:** the hard drive warning finds a Btrfs disk on Linux ([#2281](https://github.com/NotRexed/Hookshot/issues/2281)) ([6c529a2](https://github.com/NotRexed/Hookshot/commit/6c529a2da0d4d0f6b22ccb6a45a1e0935b6fa4da))
+* **builder:** the Linux builder gives this build's reason for stopping, not the last one's ([#2159](https://github.com/NotRexed/Hookshot/issues/2159)) ([bc95b7b](https://github.com/NotRexed/Hookshot/commit/bc95b7b801c3389c4c2c23bafc61a159250835af))
+* **builder:** the Linux builder shows its clock and countdown during a build ([#2150](https://github.com/NotRexed/Hookshot/issues/2150)) ([940eb9e](https://github.com/NotRexed/Hookshot/commit/940eb9ef34134913d2bc2a7b3ed5cb3caea58ef3))
+* **builder:** the Python setup checks the setup list as setup.c does ([#2057](https://github.com/NotRexed/Hookshot/issues/2057)) ([812f28d](https://github.com/NotRexed/Hookshot/commit/812f28d5389480746564af3e58e1b12e99f29534))
+* **build:** run offline bake with portable zstd and Clang 18 ([#1954](https://github.com/NotRexed/Hookshot/issues/1954)) ([51e1d98](https://github.com/NotRexed/Hookshot/commit/51e1d98f1b0f9f64ca439ea0708f870659f13c3e))
+* **ci:** recover partially enrolled AppImage toolchain PPAs ([#2275](https://github.com/NotRexed/Hookshot/issues/2275)) ([61f343e](https://github.com/NotRexed/Hookshot/commit/61f343e25f65bc0035c583d4d3d3d05ceb790b9d))
+* **debug:** the flight lets Link go for events and respawns ([#2050](https://github.com/NotRexed/Hookshot/issues/2050)) ([c2a8c92](https://github.com/NotRexed/Hookshot/commit/c2a8c922e104b7f7007961416494b34e5a5c67a6))
+* **dlss:** [#2193](https://github.com/NotRexed/Hookshot/issues/2193)'s review notes: the tolerance as dlss_checks.h says it, each refused size logged once ([#2413](https://github.com/NotRexed/Hookshot/issues/2413)) ([01c4e32](https://github.com/NotRexed/Hookshot/commit/01c4e3214df1f06304bba5a0e5b0b6b978a72e5f))
+* **dlss:** a render size a pixel past a mode's range is that mode's, and a refused size keeps the feature ([#2193](https://github.com/NotRexed/Hookshot/issues/2193)) ([1ceaa2b](https://github.com/NotRexed/Hookshot/commit/1ceaa2bae0bc5f6c24f61c23758ed10b767d8fdb))
+* **fps:** water ripples keep moving above 60 fps ([#2409](https://github.com/NotRexed/Hookshot/issues/2409)) ([6df80a8](https://github.com/NotRexed/Hookshot/commit/6df80a8d1663633c1445ac4e4add93dea1501799))
+* **framegen:** FSR 3.1 interpolation built with the SDK's name for low-resolution motion vectors ([#1943](https://github.com/NotRexed/Hookshot/issues/1943)) ([4e04e51](https://github.com/NotRexed/Hookshot/commit/4e04e5178518d2e330e9201d67e4f84335052235))
+* **hdr, fsr:** HDR with an upscaler or Sharpness reads a sampleable picture; native HDR images RGB10A2 from the start ([#2038](https://github.com/NotRexed/Hookshot/issues/2038)); FSR 3.1 above Quality ([#2147](https://github.com/NotRexed/Hookshot/issues/2147)) ([0a28ff2](https://github.com/NotRexed/Hookshot/commit/0a28ff29efc2379e0d36dc24baed2f1beb2d6c02))
+* **input:** keep camera inversion out of stick rest detection ([#2286](https://github.com/NotRexed/Hookshot/issues/2286)) ([b29967b](https://github.com/NotRexed/Hookshot/commit/b29967bf27c931c253fb87e80f0294b8f242c490))
+* **input:** turn a frozen gyroscope's sensors off and on again (gyro dead after Alt+Tab under Steam) ([#2036](https://github.com/NotRexed/Hookshot/issues/2036)) ([b76f12d](https://github.com/NotRexed/Hookshot/commit/b76f12d12ad6c7109f73abcd9a201f3356c64a5a))
+* **linux:** don't try dma-buf imports on NVIDIA's driver ([#2340](https://github.com/NotRexed/Hookshot/issues/2340)) ([a0fb7ea](https://github.com/NotRexed/Hookshot/commit/a0fb7eab2bb916bd0ebd4c757404dd3e93e400ba))
+* **linux:** make the folder __GL_SHADER_DISK_CACHE_PATH names, or NVIDIA keeps no shader cache ([#2363](https://github.com/NotRexed/Hookshot/issues/2363)) ([0ccad3a](https://github.com/NotRexed/Hookshot/commit/0ccad3ab688a5545eb8742b8db35a749eaa2958c))
+* **linux:** prevent implicit game downgrades in the builder ([#2406](https://github.com/NotRexed/Hookshot/issues/2406)) ([bd69992](https://github.com/NotRexed/Hookshot/commit/bd699925b27181c09b67761681ae424024cf2434))
+* **linux:** the updater follows a redirect only to another https link ([#2045](https://github.com/NotRexed/Hookshot/issues/2045)) ([#2086](https://github.com/NotRexed/Hookshot/issues/2086)) ([465ab86](https://github.com/NotRexed/Hookshot/commit/465ab86dbe44825f33e085d3397bb3585f89ca75))
+* **linux:** warn when permissions block udmabuf imports ([#2111](https://github.com/NotRexed/Hookshot/issues/2111)) ([7508985](https://github.com/NotRexed/Hookshot/commit/75089853186305f753d7a3f1b77a8ee8a5b81593))
+* **menu:** keep the mouse free after Escape then F1 ([#2035](https://github.com/NotRexed/Hookshot/issues/2035)) ([1a43a1e](https://github.com/NotRexed/Hookshot/commit/1a43a1e2942c7793a19115d2bd0f509adfac0195))
+* **menu:** the chosen memory budget survives a restart ([#2376](https://github.com/NotRexed/Hookshot/issues/2376)) ([7109693](https://github.com/NotRexed/Hookshot/commit/7109693443c86f7e92291211e4c914326d28f265))
+* **menu:** the Ultrawide row says Off (16:9) when it is off ([#2078](https://github.com/NotRexed/Hookshot/issues/2078)) ([bb94350](https://github.com/NotRexed/Hookshot/commit/bb94350a2098b10947fa865eadc0918b3d9280d3))
+* **mods:** merge a mod's resource size table with the button prompts' instead of switching the icons off ([#2270](https://github.com/NotRexed/Hookshot/issues/2270)) ([9a3eb90](https://github.com/NotRexed/Hookshot/commit/9a3eb902b342fc887ed756e26f82dd0102c5ae16))
+* **nup:** exclude digest-mismatched stand-in sources ([#2019](https://github.com/NotRexed/Hookshot/issues/2019)) ([2009c5f](https://github.com/NotRexed/Hookshot/commit/2009c5f98ce32631893bbf4f36c788aa91b8c9fb))
+* **oot:** try a full heap's OptimizeChangeBank allocations again ([#2451](https://github.com/NotRexed/Hookshot/issues/2451)) ([1b69533](https://github.com/NotRexed/Hookshot/commit/1b695334e34d91c383e9964a7ab839c27a904e4f))
+* **prepare:** the pipeline steps log their progress every 10 s, with the time left ("stuck on preparing shaders") ([#2186](https://github.com/NotRexed/Hookshot/issues/2186)) ([cc11554](https://github.com/NotRexed/Hookshot/commit/cc115544b96e071709c785eddf1ae2eb240ef0b4))
+* **profiler:** preserve full demangled ELF symbol names ([#2170](https://github.com/NotRexed/Hookshot/issues/2170)) ([c04d132](https://github.com/NotRexed/Hookshot/commit/c04d132f4f6333001558b8fe5a6355d1c50328d4))
+* **prompts:** auto picks the steam deck face for a steam controller ([#2448](https://github.com/NotRexed/Hookshot/issues/2448)) ([355453d](https://github.com/NotRexed/Hookshot/commit/355453dea45f57a4387fe708305aa27092c85464))
+* **prompts:** the controls page's leader lines end on their buttons ([#2089](https://github.com/NotRexed/Hookshot/issues/2089)) ([798f325](https://github.com/NotRexed/Hookshot/commit/798f32587e3fb7728a7f26322587bc30c5650c29))
+* release discarded Vulkan resources and thread wake events ([#2358](https://github.com/NotRexed/Hookshot/issues/2358)) ([e8fa368](https://github.com/NotRexed/Hookshot/commit/e8fa36874661d8b2d9960239f6499f179074d807))
+* **release:** explain the Windows zip, and let release candidates' AppImages update to the next one ([#2132](https://github.com/NotRexed/Hookshot/issues/2132)) ([2e62a97](https://github.com/NotRexed/Hookshot/commit/2e62a97735d76dc3add43af2cda6de8c4a39951d))
+* **saves:** the save script finds Lichii's own data folder ([#2146](https://github.com/NotRexed/Hookshot/issues/2146)) ([#2165](https://github.com/NotRexed/Hookshot/issues/2165)) ([e7f5581](https://github.com/NotRexed/Hookshot/commit/e7f5581c559a8458b1433bc2b9669fd824978ad3))
+* **shaders:** F2I.S32 and I2F.U32.RZ conversions, LDSM address copy (ported from Fritchii) ([#2443](https://github.com/NotRexed/Hookshot/issues/2443)) ([53bc3d4](https://github.com/NotRexed/Hookshot/commit/53bc3d4c1f5ee63d35da58b85df0b35523900fad))
+* switches that behave as players expect, and dead ones removed ([#2042](https://github.com/NotRexed/Hookshot/issues/2042)) ([2f2f537](https://github.com/NotRexed/Hookshot/commit/2f2f53722c87db812676b5abdfb6e1bde5811b10))
+* **trace:** Log input origins and game-clock timestamps ([#2247](https://github.com/NotRexed/Hookshot/issues/2247)) ([47ed9f1](https://github.com/NotRexed/Hookshot/commit/47ed9f1444efdedced9e6637b74c641d73d38e7c))
+* **trace:** Separate present-call and virtual-core waits ([#1983](https://github.com/NotRexed/Hookshot/issues/1983)) ([fc7a982](https://github.com/NotRexed/Hookshot/commit/fc7a982813df880d941eb808a24c10cff3463ebf))
+* **update:** on Linux "Skip this version" is kept, and no longer costs the game its saves ([#2283](https://github.com/NotRexed/Hookshot/issues/2283)) ([1f1c0a8](https://github.com/NotRexed/Hookshot/commit/1f1c0a86451fb3d5891c1ad9c7dd447b42ec4559))
+* **vcores:** an escaped thread takes a core again after its next block ([#1929](https://github.com/NotRexed/Hookshot/issues/1929)) ([#2302](https://github.com/NotRexed/Hookshot/issues/2302)) ([c8b9a9f](https://github.com/NotRexed/Hookshot/commit/c8b9a9f01659ec2ce4920bd9ca63cd4e3fd86106))
+* **vcores:** hos_vcore_back ends an escape too, so no inner block takes a core early ([#2387](https://github.com/NotRexed/Hookshot/issues/2387)) ([bce1476](https://github.com/NotRexed/Hookshot/commit/bce1476c75838b1e2ab20691c3789f26b15a97c1))
+* **vcores:** no core held while a movie picture is decoded ([#1929](https://github.com/NotRexed/Hookshot/issues/1929)) ([#2322](https://github.com/NotRexed/Hookshot/issues/2322)) ([d522ec0](https://github.com/NotRexed/Hookshot/commit/d522ec0e54d67cd66ead6e9506d1ed8adba41e2e))
+* **vcores:** no core held while OpenFile builds the button prompts ([#1929](https://github.com/NotRexed/Hookshot/issues/1929)) ([#2301](https://github.com/NotRexed/Hookshot/issues/2301)) ([26c12b0](https://github.com/NotRexed/Hookshot/commit/26c12b0da4e65ec37c53a6a66954411c87321bb6))
+* **vcores:** the core-wait escape at 2 s, not 250 ms ([#1929](https://github.com/NotRexed/Hookshot/issues/1929)) ([#2127](https://github.com/NotRexed/Hookshot/issues/2127)) ([07b0359](https://github.com/NotRexed/Hookshot/commit/07b03596ea6257273a6d89e8ebddb519068ea8bc))
+* **vi:** prevent frame-time jitter from speeding up the game clock ([#1911](https://github.com/NotRexed/Hookshot/issues/1911)) ([f4f2c74](https://github.com/NotRexed/Hookshot/commit/f4f2c743fec4e84beef42ffad4fbf80c77323f70))
+* **vi:** the pick-up counter fades again above a 60 fps cap ([#1832](https://github.com/NotRexed/Hookshot/issues/1832)) ([#2006](https://github.com/NotRexed/Hookshot/issues/2006)) ([f915af9](https://github.com/NotRexed/Hookshot/commit/f915af93ed0061cf4a7514c66d34ab9de1f95bf7))
+* **vk:** a fence wait covers every part of a split submission, not only the first ([#2419](https://github.com/NotRexed/Hookshot/issues/2419)) ([e0dbf40](https://github.com/NotRexed/Hookshot/commit/e0dbf40c42c9dc4e83a68184a77f01407ed200cd))
+* **vk:** a shader preparation the GPU driver stops answering in goes on or ends, and says why ([#2107](https://github.com/NotRexed/Hookshot/issues/2107)) ([#2195](https://github.com/NotRexed/Hookshot/issues/2195)) ([7759a6f](https://github.com/NotRexed/Hookshot/commit/7759a6f379f0230091b00c8b26fa71f912b16efb))
+* **vk:** count natively sampled ASTC textures by their blocks in the texture budget ([#2288](https://github.com/NotRexed/Hookshot/issues/2288)) ([fd16f15](https://github.com/NotRexed/Hookshot/commit/fd16f15bc4cc32044e907eb04a961c71774414d3))
+* **vk:** DLSS and DLAA sample textures at NVIDIA's mip bias ([#2441](https://github.com/NotRexed/Hookshot/issues/2441)) ([3319e88](https://github.com/NotRexed/Hookshot/commit/3319e88ade813a636693b4bf03102cdd7dfc12aa))
+* **vk:** FSR 3.1 draws the fixed Render resolution steps where the game's networks are left out ([#2166](https://github.com/NotRexed/Hookshot/issues/2166)) ([ebb2172](https://github.com/NotRexed/Hookshot/commit/ebb21729a3c7029d9aaa18aac5fa402bd3a9ab15))
+* **vk:** Keep memory-writing draws while pipelines compile ([#1573](https://github.com/NotRexed/Hookshot/issues/1573)) ([b75f2c1](https://github.com/NotRexed/Hookshot/commit/b75f2c1b09b8f035a2d3a989f223c55e08e87875))
+* **vk:** keep programs the driver faulted on out of the driver ([#996](https://github.com/NotRexed/Hookshot/issues/996)) ([#1823](https://github.com/NotRexed/Hookshot/issues/1823)) ([aab7daf](https://github.com/NotRexed/Hookshot/commit/aab7daf2af6294d31df135659d7f17ba7a924ecf))
+* **vk:** prevent device loss when rendering to 3D BC slices ([#2327](https://github.com/NotRexed/Hookshot/issues/2327)) ([d9a8f93](https://github.com/NotRexed/Hookshot/commit/d9a8f93de4020d89f78d60606442df19cc5692cb)), closes [#996](https://github.com/NotRexed/Hookshot/issues/996) [#1001](https://github.com/NotRexed/Hookshot/issues/1001) [#1338](https://github.com/NotRexed/Hookshot/issues/1338)
+* **vk:** read the registrations kept from before the renderer started from the host's copies ([#1117](https://github.com/NotRexed/Hookshot/issues/1117)) ([#2289](https://github.com/NotRexed/Hookshot/issues/2289)) ([696d85b](https://github.com/NotRexed/Hookshot/commit/696d85b08f242c2fb629940d6c1b76839294c3c5))
+* **vk:** recover presentation after surface loss ([#1995](https://github.com/NotRexed/Hookshot/issues/1995)) ([edcb8a1](https://github.com/NotRexed/Hookshot/commit/edcb8a19a83072843db4990c4036fbac658e3640))
+* **vk:** refresh pipeline states during Builder preparation ([#1980](https://github.com/NotRexed/Hookshot/issues/1980)) ([ca082bf](https://github.com/NotRexed/Hookshot/commit/ca082bfc2ad870e9250aa8e6d5f4648e46c2b083))
+* **vk:** size the mesh index map in whole 32-primitive blocks ([#2312](https://github.com/NotRexed/Hookshot/issues/2312)) ([f9286c4](https://github.com/NotRexed/Hookshot/commit/f9286c4532c5e1d822635ffc770490302a2004ac))
+* **vk:** stabilize shadow masks once after drawing ([#2171](https://github.com/NotRexed/Hookshot/issues/2171)) ([b5d6793](https://github.com/NotRexed/Hookshot/commit/b5d679321c48dc356b342053f5cec22ea53f8e72))
+* **vk:** stop the VRAM compaction's hold from evicting textures in use ([#2198](https://github.com/NotRexed/Hookshot/issues/2198)) ([3e95ca6](https://github.com/NotRexed/Hookshot/commit/3e95ca68a01eccbe4b79363bb3cbb0a17aa31a07))
+* **vk:** task + mesh draws through the compute fallback on Navi 21 too ([#996](https://github.com/NotRexed/Hookshot/issues/996)) ([#1992](https://github.com/NotRexed/Hookshot/issues/1992)) ([1396428](https://github.com/NotRexed/Hookshot/commit/1396428d0bfcde68b5c7bd63f9837564d9af1a05))
+* **vk:** the tree-shadow mask blend off by default (a GPU hang / device lost near Hyrule Castle) ([#2374](https://github.com/NotRexed/Hookshot/issues/2374)) ([7bba1a1](https://github.com/NotRexed/Hookshot/commit/7bba1a1513709695dd1fa1fa17ccf02c1327ac82))
+* **vk:** tree-shadow flicker without the TAAU network: the shadow mask evened out over frames (rebase of [#477](https://github.com/NotRexed/Hookshot/issues/477)) ([#1581](https://github.com/NotRexed/Hookshot/issues/1581)) ([746fa11](https://github.com/NotRexed/Hookshot/commit/746fa11582bd05518e20b2ce890e97d9f8d8bb22))
+* **vk:** upload compressed textures placed over old render-target memory ([#2452](https://github.com/NotRexed/Hookshot/issues/2452)) ([463eab1](https://github.com/NotRexed/Hookshot/commit/463eab1f5f55ae4ae537629aa81b78aa43852fea))
+* **vk:** with per-queue fences, a CPU read-back waits for the GPU work that writes it again ([#2125](https://github.com/NotRexed/Hookshot/issues/2125)) ([8d64fa1](https://github.com/NotRexed/Hookshot/commit/8d64fa105d347a7b067c05484e63718b7af4c6ab))
+
+
+### Performance Improvements
+
+* **fpx:** fuse single-precision FMA, FRECPS and FRSQRTS on x86-64-v3 ([#2383](https://github.com/NotRexed/Hookshot/issues/2383)) ([8c52e7c](https://github.com/NotRexed/Hookshot/commit/8c52e7ce9e514cf6f6fea421f617028b740789e4))
+* **host:** the game's short sleeps wait on the timer where the process has six logical processors or fewer ([#2263](https://github.com/NotRexed/Hookshot/issues/2263)) ([4d488bc](https://github.com/NotRexed/Hookshot/commit/4d488bc0290c8a0f2d4026769f894d3a62a89070))
+* **menu:** a first start picks the Quality preset for the card's memory (Minimum up to 4.5 GB or integrated, Low up to 6.5 GB) ([#2187](https://github.com/NotRexed/Hookshot/issues/2187)) ([e19d969](https://github.com/NotRexed/Hookshot/commit/e19d9693889b08ca5f307cd8ab5de32052e875e7))
+* **nup:** write each extracted member in place and check each folder once ([#2416](https://github.com/NotRexed/Hookshot/issues/2416)) ([b4f755d](https://github.com/NotRexed/Hookshot/commit/b4f755d6beaf6b8aee241e09804c210ca927f143))
+* **pipelines:** RX_VK_PCACHE_LOAD=0 skips the 2.5 GB pipeline cache file (~3 GB less RAM; opt-in) ([#2206](https://github.com/NotRexed/Hookshot/issues/2206)) ([d7a7306](https://github.com/NotRexed/Hookshot/commit/d7a730625f42cc2385b452aa4dfcb0f917b62bcd))
+* **prepare:** build fewer predicted pipelines, size the pools to the usable CPUs, and keep translated programs across cache-code changes ([#2323](https://github.com/NotRexed/Hookshot/issues/2323)) ([2ed98c4](https://github.com/NotRexed/Hookshot/commit/2ed98c46843b37a45b9afec531aba5abcd579e1a))
+* **shaders:** reuse each thread's translation pools ([#2388](https://github.com/NotRexed/Hookshot/issues/2388)) ([07aa121](https://github.com/NotRexed/Hookshot/commit/07aa1219818576dff0ee61dc23da8be467cc2a4a))
+* **textures:** a big texture whose storage is all zero is cleared on the GPU, not unswizzled on the CPU ([#2175](https://github.com/NotRexed/Hookshot/issues/2175)) ([4d68bc8](https://github.com/NotRexed/Hookshot/commit/4d68bc830dc4926727d3bd9299c050929fb5dab5))
+* **vk:** age the texture spans once a present, not at every submission ([#2420](https://github.com/NotRexed/Hookshot/issues/2420)) ([bebb0c6](https://github.com/NotRexed/Hookshot/commit/bebb0c6487e9588ffe46bf26a0a962fcfb01bfbf))
+* **vk:** ask the start's cache first for stage libraries in play ([#1961](https://github.com/NotRexed/Hookshot/issues/1961)) ([845370c](https://github.com/NotRexed/Hookshot/commit/845370c7693b0e616a6e48cbf54ecdceb4e2ee5b))
+* **vk:** texture_answer asks a flat table by slot, not a hash map ([#2439](https://github.com/NotRexed/Hookshot/issues/2439)) ([6842f21](https://github.com/NotRexed/Hookshot/commit/6842f21dd28f4351cd45fdf4a16fb8d250b2bca8))
+* **vk:** with batched submits (RADV), send a batch at once while the GPU is idle ([#1993](https://github.com/NotRexed/Hookshot/issues/1993)) ([#1999](https://github.com/NotRexed/Hookshot/issues/1999)) ([fab8cb3](https://github.com/NotRexed/Hookshot/commit/fab8cb37641714bd839ae83c2a7bc582bedc4d70))
+
+
+### Build System
+
+* **linux:** dav1d and the Vulkan back end's headers are pinned by what they unpack to ([#2045](https://github.com/NotRexed/Hookshot/issues/2045)) ([#2087](https://github.com/NotRexed/Hookshot/issues/2087)) ([9a37fac](https://github.com/NotRexed/Hookshot/commit/9a37facb8234a922da6a95825ea151e7ca633104))
+* **release:** a contributed pipeline list from [#2034](https://github.com/NotRexed/Hookshot/issues/2034), RTX 4060 laptop with frame generation and HDR, 6597 pipelines ([#2082](https://github.com/NotRexed/Hookshot/issues/2082)) ([51d468f](https://github.com/NotRexed/Hookshot/commit/51d468f91b2538b3afb2dd6c9f9e6124d23b03aa))
+* **release:** a contributed pipeline list from scripted test routes, 921 pipelines ([#2429](https://github.com/NotRexed/Hookshot/issues/2429)) ([4a53c89](https://github.com/NotRexed/Hookshot/commit/4a53c8979138299bd50b1b671313b7e5561dab5d))
+* **release:** contributed pipeline lists from [#2034](https://github.com/NotRexed/Hookshot/issues/2034) (3 lists) ([#2445](https://github.com/NotRexed/Hookshot/issues/2445)) ([34f0578](https://github.com/NotRexed/Hookshot/commit/34f057854ed7dd5991fc863136be58cee42be84b))
+* **release:** the pipeline tour's list, 11227 pipelines (6238 no other list holds) ([#2065](https://github.com/NotRexed/Hookshot/issues/2065)) ([a74f6a8](https://github.com/NotRexed/Hookshot/commit/a74f6a8846c6a1dc063895a6730069112ed3c737))
+* **release:** two contributed pipeline lists from [#2034](https://github.com/NotRexed/Hookshot/issues/2034) (RTX 5090 ultrawide DLAA, RX 9070 XT) ([#2075](https://github.com/NotRexed/Hookshot/issues/2075)) ([21fa136](https://github.com/NotRexed/Hookshot/commit/21fa136590ab862f761852effc34395982072c90))
+
+
+### Continuous Integration
+
+* **appimage:** the object cache keeps the objects a build used ([#2090](https://github.com/NotRexed/Hookshot/issues/2090)) ([eb689bc](https://github.com/NotRexed/Hookshot/commit/eb689bcb81461d2d3d09a591af20a78deb2b319d))
+* cache the AppImage's back-end objects for pull requests, and a lighter deps cache ([#2079](https://github.com/NotRexed/Hookshot/issues/2079)) ([37031ed](https://github.com/NotRexed/Hookshot/commit/37031ed7e8eaaa1bed03f707d1b1f31d2a5c0a62))
+* faster pull request checks (Linux tests in two parts with ccache, Windows object cache, no builds for docs-only changes) ([#2124](https://github.com/NotRexed/Hookshot/issues/2124)) ([872cb68](https://github.com/NotRexed/Hookshot/commit/872cb68eaa533a0fd6b732204061dc32afc0bbd0))
+* **release:** one Promote at a time, drafts found by listing, and a published version always recorded ([#2108](https://github.com/NotRexed/Hookshot/issues/2108)) ([bdfe09c](https://github.com/NotRexed/Hookshot/commit/bdfe09cf2722704846a84eb2ecfb60663956ad34))
+* unpack LLVM beside the other dependencies, not before them ([#2091](https://github.com/NotRexed/Hookshot/issues/2091)) ([ceb8745](https://github.com/NotRexed/Hookshot/commit/ceb8745e05d8ee83b401c04ceb20a02feb41792d))
+
+
+### Documentation
+
+* **contributing:** link the issues a pull request fixes ([#2377](https://github.com/NotRexed/Hookshot/issues/2377)) ([b744b1e](https://github.com/NotRexed/Hookshot/commit/b744b1eca1d2a6847f30e654ac7ce06d9a3fccde))
+* **readme:** NVIDIA DLSS on Linux, one entry for each way to build ([#2056](https://github.com/NotRexed/Hookshot/issues/2056)) ([#2074](https://github.com/NotRexed/Hookshot/issues/2074)) ([23840a4](https://github.com/NotRexed/Hookshot/commit/23840a481bf72786d8cee8c6d72be1944511f1f1))
+* record RX 7900 XT Linux test runs ([#2202](https://github.com/NotRexed/Hookshot/issues/2202)) ([8d7e473](https://github.com/NotRexed/Hookshot/commit/8d7e473b22a7499b5264a3bbbd16c0af3fe559fa))
+* tested configurations: RTX 5090, 621.14, Windows 11 (v2.0.14) ([#2037](https://github.com/NotRexed/Hookshot/issues/2037)) ([28a60b5](https://github.com/NotRexed/Hookshot/commit/28a60b5e38866775d80f16f4d796a1c47bbed279))
+* where the CPU goes: a per-scene profile of the game and the script that rebuilds it ([#2424](https://github.com/NotRexed/Hookshot/issues/2424)) ([e567c0f](https://github.com/NotRexed/Hookshot/commit/e567c0f6657e0a511ef35eb002d0d1b7edb7ac16))
+
+
+### Tests
+
+* **builder:** the NUP cache checks no longer depend on the clone's work folder ([#2291](https://github.com/NotRexed/Hookshot/issues/2291)) ([4b5266a](https://github.com/NotRexed/Hookshot/commit/4b5266a033d10ffd51eebc27404eb10a18829614))
+* eight checks say which compiler or module they need ([#2103](https://github.com/NotRexed/Hookshot/issues/2103)) ([c6bbdf2](https://github.com/NotRexed/Hookshot/commit/c6bbdf261b2b35e7a855897ddd05b76612bfc66f))
+* fix main's three red checks (fixture fopen deprecation; DLSS toggle stub lacks switching; actionlint SC2012) ([#2092](https://github.com/NotRexed/Hookshot/issues/2092)) ([e3b1964](https://github.com/NotRexed/Hookshot/commit/e3b1964ed8e8e71faaed256dc21d6c55105eb7c0))
+* hold the recorder at each ordering point in test_recorder_sync's thread scenarios ([#2251](https://github.com/NotRexed/Hookshot/issues/2251)) ([49f75dc](https://github.com/NotRexed/Hookshot/commit/49f75dc82fb604643390ac7f95b1f5251b3ba09e))
+* main's red checks after [#1866](https://github.com/NotRexed/Hookshot/issues/1866) and [#2041](https://github.com/NotRexed/Hookshot/issues/2041) (finish-block 'a'; vsync fixture getenv deprecation) ([#2109](https://github.com/NotRexed/Hookshot/issues/2109)) ([7d24a73](https://github.com/NotRexed/Hookshot/commit/7d24a736dae8a2430988d459aba287a303877bdb))
+* main's source checks pass again after [#2061](https://github.com/NotRexed/Hookshot/issues/2061) and [#2046](https://github.com/NotRexed/Hookshot/issues/2046) ([#2068](https://github.com/NotRexed/Hookshot/issues/2068)) ([96ad468](https://github.com/NotRexed/Hookshot/commit/96ad46809fea43f1c04c6de69ae19abf1813fabc))
+* test_native_astc_texture_count builds on Windows, where the CRT marks scanf deprecated ([#2397](https://github.com/NotRexed/Hookshot/issues/2397)) ([d207360](https://github.com/NotRexed/Hookshot/commit/d20736091e34d12db245ceba5e83b1404c3c539e))
+* test_vcore_fs_open and test_vcore_video_acquire build again with env_on ([#2380](https://github.com/NotRexed/Hookshot/issues/2380)) ([9796361](https://github.com/NotRexed/Hookshot/commit/9796361a0c8e28b05b08e42d226e17756145a79d))
+* the precompile compute guard check builds with llvm-mingw too ([#2390](https://github.com/NotRexed/Hookshot/issues/2390)) ([e13fa88](https://github.com/NotRexed/Hookshot/commit/e13fa8866aed4c783adbc4e6404b99851e9347b8))
+* the release scripts' stand-in gh is safe when two calls run at once (flaky JSONDecodeError) ([#2130](https://github.com/NotRexed/Hookshot/issues/2130)) ([e0578ed](https://github.com/NotRexed/Hookshot/commit/e0578ede6e7480eae805d08ac06b8e9da54f0a71))
+* the updater digest check runs where only a later .NET SDK is installed ([#2294](https://github.com/NotRexed/Hookshot/issues/2294)) ([653470f](https://github.com/NotRexed/Hookshot/commit/653470f06a57163ea17f1ecd87920ad1ea10dbd9))
+
+
+### Miscellaneous Chores
+
+* **main:** release 2.1.0-rc.3 ([#2062](https://github.com/NotRexed/Hookshot/issues/2062)) ([9d5a292](https://github.com/NotRexed/Hookshot/commit/9d5a2927c4c7c2624bcd8cf01dfa70c47c6037f5))
+* **release:** record 2.1.0 as released ([309f86b](https://github.com/NotRexed/Hookshot/commit/309f86b1cd88068106c40c02892854712f9db0b1))
+
 ## [2.1.0](https://github.com/NotRexed/Hookshot/releases/tag/v2.1.0) (2026-11-11)
 
 Release candidate [v2.1.0-rc.2](https://github.com/NotRexed/Hookshot/releases/tag/v2.1.0-rc.2), published as 2.1.0. Its changes are in its release candidates' entries below.
