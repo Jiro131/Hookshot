@@ -107,8 +107,13 @@ bool make_dir(const std::string& path, std::string* why) {
     if (CreateDirectoryA(path.c_str(), nullptr)) return true;
     const DWORD e = GetLastError();   // (CreateDirectoryA sets this, not errno)
     if (e == ERROR_ALREADY_EXISTS) return true;
-    char text[256] = "";
-    FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, e, 0, text, sizeof text, nullptr);
+    // (Windows' text as UTF-8 whatever the process's code page: FormatMessageA's follows it, UTF-8 in the game through its
+    // manifest (nx2/win_manifest.py) but the system's code page without it, as in a test's driver or before Windows 10 1903)
+    wchar_t wide[256];
+    const DWORD n = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, e, 0, wide,
+                                   sizeof wide / sizeof wide[0], nullptr);
+    char text[sizeof wide / sizeof wide[0] * 3 + 1];   // (a UTF-16 unit is at most three bytes of UTF-8)
+    text[n ? WideCharToMultiByte(CP_UTF8, 0, wide, (int)n, text, sizeof text - 1, nullptr, nullptr) : 0] = 0;
     *why = "Windows error " + std::to_string(e) + (text[0] ? ": " + trimmed(text) : std::string());
     return false;
 #else
