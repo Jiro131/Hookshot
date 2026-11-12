@@ -671,12 +671,19 @@ def still_in_nup_frame(f, head):
         return True
 
 
+# Files the damaged-texture check opens at once: on a fresh unpack each open took about 4 ms, which we attribute to a virus
+# scanner scanning the file first (not confirmed with the scanner off); opened several at a time, those waits overlap.
+# Python's own default for I/O work, at most 32
+DAMAGED_CHECK_THREADS = min(32, (os.cpu_count() or 1) + 4)
+
+
 def damaged_game_files(romfs, progress=None):
     """The romfs .zs files that do not start as zstd: in the 23.3 GB dumps three of them begin with zeros (the complete
     dump is about 23.8 GB), and the game then leaves out every model that uses one: the Water Temple's walls and floors,
     the Great Fairy Fountain's floor (#1002, #718, #1259). Also those still in the .nup's zstd frame (still_in_nup_frame).
-    progress(done, total), when given, after each file: the files are listed first, then opened one by one (about
-    100,000, minutes where a virus scanner looks at each one)"""
+    progress(done, total), when given, after each file, in the listed order: the files are listed first, then opened
+    (about 100,000), DAMAGED_CHECK_THREADS at a time. On a fresh unpack, one at a time took minutes (attributed to a virus
+    scanner, see DAMAGED_CHECK_THREADS)"""
     root = long_path(romfs)   # (walked and read as long paths; the paths returned are under romfs as given)
     paths = []   # (the long path read, the path under romfs as given)
     for folder, dirs, files in os.walk(root):
@@ -684,14 +691,24 @@ def damaged_game_files(romfs, progress=None):
         rel = os.path.relpath(folder, root)
         paths += [(os.path.join(folder, name), os.path.normpath(os.path.join(romfs, rel, name)))
                   for name in sorted(files) if name.endswith(".zs")]
-    found = []
-    for i, (path, given) in enumerate(paths):
+
+    def damaged(path):
         with open(path, "rb") as f:
             head = f.read(18)
-            if not zstd_start(head[:4]) or still_in_nup_frame(f, head):
-                found.append(given)
-        if progress:
-            progress(i + 1, len(paths))
+            return not zstd_start(head[:4]) or still_in_nup_frame(f, head)
+
+    from concurrent.futures import ThreadPoolExecutor
+    found = []
+    done = 0
+    with ThreadPoolExecutor(DAMAGED_CHECK_THREADS) as pool:
+        for at in range(0, len(paths), 4096):   # (in slices: not 100,000 pending opens at once)
+            part = paths[at:at + 4096]
+            for (_, given), bad in zip(part, pool.map(damaged, [path for path, _ in part])):   # (map: in the listed order)
+                if bad:
+                    found.append(given)
+                done += 1
+                if progress:
+                    progress(done, len(paths))
     return found
 
 
